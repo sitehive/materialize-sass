@@ -1,19 +1,18 @@
 (function ($) {
-  $(document).on('turbolinks:load', function() {
+  // Function to update labels of text fields
+  Materialize.updateTextFields = function() {
+    var input_selector = 'input[type=text], input[type=password], input[type=email], input[type=url], input[type=tel], input[type=number], input[type=search], textarea';
+    $(input_selector).each(function(index, element) {
+      if ($(element).val().length > 0 || element.autofocus ||$(this).attr('placeholder') !== undefined || $(element)[0].validity.badInput === true) {
+        $(this).siblings('label').addClass('active');
+      }
+      else {
+        $(this).siblings('label').removeClass('active');
+      }
+    });
+  };
 
-    // Function to update labels of text fields
-    Materialize.updateTextFields = function() {
-      var input_selector = 'input[type=text], input[type=password], input[type=email], input[type=url], input[type=tel], input[type=number], input[type=search], textarea';
-      $(input_selector).each(function(index, element) {
-        if ($(element).val().length > 0 || element.autofocus ||$(this).attr('placeholder') !== undefined || $(element)[0].validity.badInput === true) {
-          $(this).siblings('label').addClass('active');
-        }
-        else {
-          $(this).siblings('label').removeClass('active');
-        }
-      });
-    };
-
+  Materialize.initializeForms = function() {
     // Text based inputs
     var input_selector = 'input[type=text], input[type=password], input[type=email], input[type=url], input[type=tel], input[type=number], input[type=search], textarea';
 
@@ -357,7 +356,11 @@
       });
     };
 
-  }); // End of $(document).ready
+  }; // End of Materialize.initializeForms
+  
+  $(document).on('turbolinks:load', function() {
+    Materialize.initializeForms();
+  });  // End of $(document).ready
 
   /*******************
    *  Select Plugin  *
