@@ -1,21 +1,24 @@
 (function ($) {
   $(document).on('turbolinks:load', function() {
+    Materialize.initializeFAB();
+  });
+  
+  // jQuery reverse
+  $.fn.reverse = [].reverse;
 
-    // jQuery reverse
-    $.fn.reverse = [].reverse;
-
+  Materialize.initializeFAB = function() {
     // Hover behaviour: make sure this doesn't work on .click-to-toggle FABs!
-    $(document).on('mouseenter.fixedActionBtn', '.fixed-action-btn:not(.click-to-toggle):not(.toolbar)', function(e) {
+    $(document).on('mouseenter.fixedActionBtn', '.fixed-action-btn:not(.click-to-toggle):not(.toolbar)', function (e) {
       var $this = $(this);
       openFABMenu($this);
     });
-    $(document).on('mouseleave.fixedActionBtn', '.fixed-action-btn:not(.click-to-toggle):not(.toolbar)', function(e) {
+    $(document).on('mouseleave.fixedActionBtn', '.fixed-action-btn:not(.click-to-toggle):not(.toolbar)', function (e) {
       var $this = $(this);
       closeFABMenu($this);
     });
 
     // Toggle-on-click behaviour.
-    $(document).on('click.fabClickToggle', '.fixed-action-btn.click-to-toggle > a', function(e) {
+    $(document).on('click.fabClickToggle', '.fixed-action-btn.click-to-toggle > a', function (e) {
       var $this = $(this);
       var $menu = $this.parent();
       if ($menu.hasClass('active')) {
@@ -31,8 +34,7 @@
       var $menu = $this.parent();
       FABtoToolbar($menu);
     });
-
-  });
+  }
 
   $.fn.extend({
     openFAB: function() {
