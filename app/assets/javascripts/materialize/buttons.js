@@ -1,42 +1,15 @@
 (function ($) {
   $(document).on('turbolinks:load', function() {
-    Materialize.initializeFAB();
+    $('.fixed-action-btn').fab()
   });
   
   // jQuery reverse
   $.fn.reverse = [].reverse;
 
-  Materialize.initializeFAB = function() {
-    // Hover behaviour: make sure this doesn't work on .click-to-toggle FABs!
-    $(document).on('mouseenter.fixedActionBtn', '.fixed-action-btn:not(.click-to-toggle):not(.toolbar)', function (e) {
-      var $this = $(this);
-      openFABMenu($this);
-    });
-    $(document).on('mouseleave.fixedActionBtn', '.fixed-action-btn:not(.click-to-toggle):not(.toolbar)', function (e) {
-      var $this = $(this);
-      closeFABMenu($this);
-    });
-
-    // Toggle-on-click behaviour.
-    $(document).on('click.fabClickToggle', '.fixed-action-btn.click-to-toggle > a', function (e) {
-      var $this = $(this);
-      var $menu = $this.parent();
-      if ($menu.hasClass('active')) {
-        closeFABMenu($menu);
-      } else {
-        openFABMenu($menu);
-      }
-    });
-
-    // Toolbar transition behaviour.
-    $(document).on('click.fabToolbar', '.fixed-action-btn.toolbar > a', function(e) {
-      var $this = $(this);
-      var $menu = $this.parent();
-      FABtoToolbar($menu);
-    });
-  }
-
   $.fn.extend({
+    fab: function() {
+      initializeFABMenu($(this));
+    },
     openFAB: function() {
       openFABMenu($(this));
     },
@@ -51,6 +24,32 @@
     }
   });
 
+
+  var initializeFABMenu = function (btn) {
+    var $menu = btn;
+    var $link = $menu.find('> a');
+
+    if ($menu.hasClass('click-to-toggle')) {
+      $link.click(function() {
+        if ($menu.hasClass('active')) {
+          closeFABMenu($menu);
+        } else {
+          openFABMenu($menu);
+        }
+      })
+    } else if ($menu.hasClass('toolbar')) {
+      $link.click(function () {
+        FABtoToolbar($menu);
+      });
+    } else {
+      $link.on('mouseenter', function() {
+        openFABMenu($menu);
+      });
+      $link.on('mouseleave', function() {
+        closeFABMenu($menu);
+      });
+    }
+  };
 
   var openFABMenu = function (btn) {
     var $this = btn;
